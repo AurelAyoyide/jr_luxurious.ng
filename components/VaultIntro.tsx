@@ -7,7 +7,6 @@ interface VaultIntroProps {
 
 export const VaultIntro: React.FC<VaultIntroProps> = ({ onComplete }) => {
   const [stage, setStage] = useState(0);
-  
 
   useEffect(() => {
     // Sequence timer
