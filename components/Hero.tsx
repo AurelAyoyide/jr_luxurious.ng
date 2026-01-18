@@ -71,7 +71,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1, duration: 1.2 }}
-            className="absolute inset-0 bg-metal-gradient border border-white/5 backdrop-blur-sm rounded-t-full rounded-b-full overflow-hidden"
+            className="absolute inset-0 bg-metal-gradient border border-white/5 backdrop-blur-sm overflow-hidden"
           >
             {/* Mocking a 3D/High-end visual with an image */}
             <div className="w-full h-full relative">
