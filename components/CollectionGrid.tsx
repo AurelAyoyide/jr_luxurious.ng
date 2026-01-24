@@ -9,9 +9,10 @@ const FILTERS = ['All', 'Rolex', 'Patek Philippe', 'Audemars Piguet', 'Omega', '
 interface CollectionGridProps {
     onWatchClick?: (watch: Watch) => void;
     onAddToCart?: (watch: Watch) => void;
+    onViewAll?: () => void;
 }
 
-export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, onAddToCart }) => {
+export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, onAddToCart, onViewAll }) => {
     const [activeFilter, setActiveFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 3;
@@ -64,15 +65,16 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, on
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[800px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {paginatedWatches.map((watch, index) => (
-                        <WatchCard
-                            key={watch.id}
-                            watch={watch}
-                            index={index % ITEMS_PER_PAGE}
-                            onClick={() => onWatchClick?.(watch)}
-                            onAddToCart={() => onAddToCart?.(watch)}
-                        />
+                        <div key={watch.id} className="flex flex-col">
+                            <WatchCard
+                                watch={watch}
+                                index={index % ITEMS_PER_PAGE}
+                                onClick={() => onWatchClick?.(watch)}
+                                onAddToCart={() => onAddToCart?.(watch)}
+                            />
+                        </div>
                     ))}
                 </div>
 
@@ -113,6 +115,38 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, on
                         </button>
                     </div>
                 )}
+
+                <div className="mt-32">
+                    <button
+                        onClick={onViewAll}
+                        className="w-full relative py-16 px-10 border border-white/5 bg-[#0a0a0c] overflow-hidden group hover:border-luxury-gold/30 transition-all duration-700"
+                    >
+                        {/* Interactive Background Gradient */}
+                        <div className="absolute top-0 right-0 -mr-24 -mt-24 w-80 h-80 bg-luxury-gold/5 blur-[100px] rounded-full group-hover:bg-luxury-gold/10 transition-colors duration-700" />
+                        <div className="absolute bottom-0 left-0 -ml-24 -mb-24 w-80 h-80 bg-luxury-gold/5 blur-[100px] rounded-full group-hover:bg-luxury-gold/10 transition-colors duration-700" />
+                        
+                        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 max-w-5xl mx-auto text-left">
+                            <div className="flex-1">
+                                <span className="text-[10px] uppercase tracking-[0.4em] text-luxury-gold mb-4 block font-medium">Full Archive Access</span>
+                                <h3 className="text-3xl md:text-5xl font-serif text-white mb-4 group-hover:text-luxury-gold transition-colors duration-500 tracking-tight">
+                                    Explore the Entire Collection
+                                </h3>
+                                <p className="text-luxury-muted max-w-xl text-base font-light italic opacity-70 leading-relaxed">
+                                    Can't find your Grail? Access our complete inventory of rare timepieces, recently acquired assets, and investment-grade pieces.
+                                </p>
+                            </div>
+                            
+                            <div className="flex flex-col items-center md:items-end gap-5">
+                                <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-luxury-gold group-hover:scale-110 transition-all duration-700 bg-white/5">
+                                    <ArrowUpRight size={22} className="text-luxury-muted group-hover:text-luxury-gold transition-colors" />
+                                </div>
+                                <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-luxury-muted group-hover:text-white transition-colors">
+                                    Enter the Archive
+                                </span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
             </div>
         </section>
     );
@@ -169,17 +203,17 @@ const WatchCard: React.FC<{
             </div>
 
             {/* Content */}
-            <div className="p-6 relative">
+            <div className="p-5 relative">
                 <div className="flex justify-between items-start mb-2">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-luxury-muted">{watch.brand}</span>
                     <span className="text-[10px] font-mono text-luxury-muted">{watch.reference}</span>
                 </div>
 
-                <h3 className="text-xl font-serif text-white mb-4 group-hover:text-luxury-gold transition-colors">
+                <h3 className="text-xl font-serif text-white mb-3 group-hover:text-luxury-gold transition-colors">
                     {watch.model}
                 </h3>
 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-4">
                     {watch.specs.slice(0, 3).map((spec, i) => (
                         <span key={i} className="text-[9px] uppercase border border-white/10 px-2 py-1 text-luxury-muted">
                             {spec}
@@ -187,7 +221,7 @@ const WatchCard: React.FC<{
                     ))}
                 </div>
 
-                <div className="flex justify-between items-end pt-4 border-t border-white/5">
+                <div className="flex justify-between items-end pt-3 border-t border-white/5">
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase text-luxury-muted mb-1">Price</span>
                         <span className="font-mono text-lg text-luxury-gold">

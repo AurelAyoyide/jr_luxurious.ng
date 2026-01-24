@@ -4,7 +4,8 @@ export interface Watch {
   model: string;
   reference: string;
   price: number;
-  image: string;
+  image: string; // image principale (pour compatibilité)
+  images?: string[]; // nouvelles images multiples
   status: 'AVAILABLE' | 'RESERVED' | 'SOLD';
   condition: 'New' | 'Like New' | 'Excellent' | 'Vintage';
   year: number;
@@ -30,4 +31,10 @@ export interface NavItem {
 
 export interface CartItem extends Watch {
   quantity: number;
+}
+
+export interface PortfolioItem extends Omit<Watch, 'status'> {
+  purchaseDate: string;
+  status: 'Acquired' | 'Pending' | 'In Transit';
+  appreciation?: number; // Simulated gain
 }

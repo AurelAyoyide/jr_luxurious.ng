@@ -13,7 +13,9 @@ import { CartDrawer } from './components/CartDrawer';
 import { SellerDashboard } from './components/SellerDashboard';
 import { LoginModal } from './components/LoginModal';
 import { OrderSummary } from './components/OrderSummary';
-import { Watch, CartItem } from './types';
+import { ClientPortfolio } from './components/ClientPortfolio';
+import { CatalogPage } from './components/CatalogPage';
+import { Watch, CartItem, PortfolioItem } from './types';
 import { AnimatePresence, motion } from 'framer-motion';
 
 function App() {
@@ -21,9 +23,11 @@ function App() {
   const [selectedWatch, setSelectedWatch] = useState<Watch | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [view, setView] = useState<'client' | 'seller' | 'summary'>('client');
+  const [view, setView] = useState<'client' | 'seller' | 'summary' | 'portfolio' | 'catalog'>('client');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [clientName, setClientName] = useState('');
 
   // Scroll to top when a product is selected
   useEffect(() => {
@@ -34,10 +38,12 @@ function App() {
 
   const handleWatchSelect = (watch: Watch) => {
     setSelectedWatch(watch);
+    setView('client');
   };
 
   const handleBackToHome = () => {
     setSelectedWatch(null);
+    setView('client');
     window.scrollTo(0, 0);
   };
 
@@ -89,9 +95,18 @@ function App() {
     window.scrollTo(0, 0);
   };
 
-  const handleFinalizeOrder = () => {
+  const handleFinalizeOrder = (name: string) => {
+    // Move items to portfolio
+    const newAssets: PortfolioItem[] = cartItems.map(item => ({
+      ...item,
+      status: 'Pending',
+      purchaseDate: new Date().toLocaleDateString()
+    }));
+
+    setClientName(name);
+    setPortfolioItems(prev => [...newAssets, ...prev]);
     setCartItems([]);
-    setView('client');
+    setView('portfolio');
     window.scrollTo(0, 0);
   };
 
@@ -103,13 +118,16 @@ function App() {
 
       {introComplete && (
         <div className="min-h-screen bg-luxury-black text-white selection:bg-luxury-gold selection:text-black">
-          {view === 'client' ? (
+          {view === 'client' || view === 'portfolio' || view === 'catalog' ? (
             <>
               <Navbar
                 onLogoClick={handleBackToHome}
                 cartCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
                 onOpenCart={() => setIsCartOpen(true)}
                 onOpenSeller={handleOpenSeller}
+                onOpenPortfolio={() => setView('portfolio')}
+                onOpenCatalog={() => setView('catalog')}
+                portfolioCount={portfolioItems.length}
               />
 
               <CartDrawer
@@ -122,7 +140,11 @@ function App() {
               />
 
               <AnimatePresence mode="wait">
-                {!selectedWatch ? (
+                {view === 'portfolio' ? (
+                  <ClientPortfolio items={portfolioItems} clientName={clientName} />
+                ) : view === 'catalog' ? (
+                  <CatalogPage onWatchClick={handleWatchSelect} onAddToCart={addToCart} />
+                ) : !selectedWatch ? (
                   <motion.div
                     key="home"
                     initial={{ opacity: 0 }}
@@ -130,11 +152,12 @@ function App() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                   >
-                    <Hero />
+                    <Hero onExploreCatalog={() => setView('catalog')} />
                     <FeaturedSection />
                     <CollectionGrid
                       onWatchClick={handleWatchSelect}
                       onAddToCart={addToCart}
+                      onViewAll={() => setView('catalog')}
                     />
                     <AuthenticationTimeline />
                     <InvestmentChart />
@@ -158,7 +181,7 @@ function App() {
                 )}
               </AnimatePresence>
 
-              <Footer onOpenSeller={handleOpenSeller} />
+              <Footer onOpenSeller={handleOpenSeller} onOpenCatalog={() => setView('catalog')} />
             </>
           ) : view === 'seller' ? (
             <SellerDashboard

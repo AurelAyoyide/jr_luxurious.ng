@@ -24,12 +24,20 @@ interface ProductDetailProps {
 export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, onWatchClick, onAddToCart }) => {
     const [isLiked, setIsLiked] = React.useState(false);
     const [isReserving, setIsReserving] = React.useState(false);
+    const [selectedImage, setSelectedImage] = React.useState(0);
     // Ensure we start at top
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [watch]);
 
-    const relatedWatches = WATCHES.filter(w => w.brand === watch.brand && w.id !== watch.id).slice(0, 3);
+    // Recommendation Logic: Brand matches first, then random
+    const relatedWatches = React.useMemo(() => {
+        const brandMatches = WATCHES.filter(w => w.brand === watch.brand && w.id !== watch.id);
+        const otherWatches = WATCHES.filter(w => w.brand !== watch.brand && w.id !== watch.id)
+            .sort(() => 0.5 - Math.random()); // Shuffle
+
+        return [...brandMatches, ...otherWatches].slice(0, 3);
+    }, [watch]);
 
     const handleReserve = () => {
         setIsReserving(true);
@@ -54,31 +62,55 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, on
 
                     {/* Left Column: Visuals */}
                     <div className="lg:col-span-12 xl:col-span-7 space-y-8">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="aspect-[4/5] bg-[#1a1a20] overflow-hidden relative group rounded-sm"
-                        >
-                            <img
-                                src={watch.image}
-                                alt={watch.model}
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                            />
-                            <div className="absolute top-6 left-6 flex flex-col gap-2">
-                                {watch.isNewArrival && (
-                                    <span className="bg-luxury-gold text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest">New Arrival</span>
-                                )}
-                                {watch.isInvestmentGrade && (
-                                    <span className="bg-white text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Investment Grade</span>
-                                )}
-                            </div>
-                            <button
-                                onClick={() => setIsLiked(!isLiked)}
-                                className={`absolute top-6 right-6 p-3 backdrop-blur-md rounded-full border transition-all duration-300 ${isLiked ? 'bg-red-500 border-red-500 text-white' : 'bg-luxury-black/40 border-white/10 text-white hover:text-red-500'}`}
+                        <div className="space-y-6">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="aspect-[4/5] bg-[#1a1a20] overflow-hidden relative group rounded-sm border border-white/5"
                             >
-                                <Heart size={18} strokeWidth={1.5} fill={isLiked ? "currentColor" : "none"} />
-                            </button>
-                        </motion.div>
+                                <img
+                                    src={watch.images && watch.images.length > 0 ? watch.images[selectedImage] : watch.image}
+                                    alt={watch.model}
+                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                />
+                                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                                    {watch.isNewArrival && (
+                                        <span className="bg-luxury-gold text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest">New Arrival</span>
+                                    )}
+                                    {watch.isInvestmentGrade && (
+                                        <span className="bg-white text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Investment Grade</span>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={() => setIsLiked(!isLiked)}
+                                    className={`absolute top-6 right-6 p-3 backdrop-blur-md rounded-full border transition-all duration-300 ${isLiked ? 'bg-red-500 border-red-500 text-white' : 'bg-luxury-black/40 border-white/10 text-white hover:text-red-500'}`}
+                                >
+                                    <Heart size={18} strokeWidth={1.5} fill={isLiked ? "currentColor" : "none"} />
+                                </button>
+                            </motion.div>
+
+                            {/* Miniatures Gallery */}
+                            {watch.images && watch.images.length > 1 && (
+                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                    {watch.images.map((img, idx) => (
+                                        <button
+                                            key={img}
+                                            onClick={() => setSelectedImage(idx)}
+                                            className={`relative flex-shrink-0 w-24 aspect-square rounded-sm overflow-hidden border transition-all duration-300 ${
+                                                selectedImage === idx 
+                                                ? 'border-luxury-gold ring-1 ring-luxury-gold/50' 
+                                                : 'border-white/10 opacity-50 hover:opacity-100 hover:border-white/30'
+                                            }`}
+                                        >
+                                            <img src={img} alt={`${watch.model} view ${idx + 1}`} className="w-full h-full object-cover" />
+                                            {selectedImage === idx && (
+                                                <div className="absolute inset-0 bg-luxury-gold/5" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
                         {/* Product Story */}
                         <div className="py-12 border-t border-white/10">
@@ -195,8 +227,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, on
                     <section className="py-24 border-t border-white/10">
                         <div className="flex justify-between items-end mb-16">
                             <div>
-                                <h2 className="text-5xl font-serif text-white mb-4">More from {watch.brand}</h2>
-                                <p className="text-luxury-muted text-sm uppercase tracking-widest">Selected companions from our vault</p>
+                                <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">You May Also Like</h2>
+                                <p className="text-luxury-muted text-sm uppercase tracking-widest">Curated recommendations from the vault</p>
                             </div>
                             <button
                                 onClick={onClose}
@@ -205,19 +237,23 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, on
                                 View Collection <ArrowLeft className="rotate-180 group-hover:translate-x-2 transition-transform" size={14} />
                             </button>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                             {relatedWatches.map((w) => (
                                 <div key={w.id} className="group cursor-pointer" onClick={() => onWatchClick(w)}>
-                                    <div className="aspect-[4/5] bg-luxury-card mb-6 overflow-hidden relative rounded-sm">
+                                    <div className="aspect-[4/5] bg-luxury-card mb-4 overflow-hidden relative rounded-sm border border-white/5 group-hover:border-luxury-gold/30 transition-colors">
                                         <img
                                             src={w.image}
                                             alt={w.model}
-                                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-110"
+                                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-105"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-luxury-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        {w.brand === watch.brand && (
+                                            <span className="absolute top-2 right-2 px-2 py-1 bg-white/10 backdrop-blur-md text-[8px] uppercase tracking-widest text-white border border-white/10">Same Brand</span>
+                                        )}
                                     </div>
-                                    <span className="text-[10px] uppercase text-luxury-gold tracking-[0.3em] block mb-2">{w.brand}</span>
-                                    <h4 className="text-2xl font-serif text-white group-hover:text-luxury-gold transition-colors tracking-tight">{w.model}</h4>
+                                    <span className="text-[9px] uppercase text-luxury-muted tracking-[0.3em] block mb-2">{w.brand}</span>
+                                    <h4 className="text-xl font-serif text-white group-hover:text-luxury-gold transition-colors tracking-tight mb-2">{w.model}</h4>
+                                    <span className="font-mono text-sm text-luxury-gold">₦{w.price.toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>

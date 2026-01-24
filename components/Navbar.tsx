@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, ShoppingBag, X } from 'lucide-react';
+import { Menu, ShoppingBag, X, Briefcase } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_ITEMS } from '../constants';
 
@@ -8,9 +8,20 @@ interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
   onOpenSeller: () => void;
+  onOpenPortfolio: () => void;
+  onOpenCatalog: () => void;
+  portfolioCount: number;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onLogoClick, cartCount, onOpenCart, onOpenSeller }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onLogoClick,
+  cartCount,
+  onOpenCart,
+  onOpenSeller,
+  onOpenPortfolio,
+  onOpenCatalog,
+  portfolioCount
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -54,14 +65,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onLogoClick, cartCount, onOpenCa
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {NAV_ITEMS.map((item) => (
-              <a
+              <button
                 key={item.label}
-                href={item.href}
+                onClick={() => {
+                  if (item.label === 'Collection') onOpenCatalog();
+                  else window.location.hash = item.href;
+                }}
                 className="text-[11px] uppercase tracking-[0.2em] text-luxury-muted hover:text-luxury-gold transition-colors relative group"
               >
                 {item.label}
                 <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-luxury-gold transition-all duration-300 group-hover:w-full" />
-              </a>
+              </button>
             ))}
           </div>
 
@@ -73,9 +87,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onLogoClick, cartCount, onOpenCa
             >
               <span className="text-[10px] uppercase tracking-widest font-bold">Concierge</span>
             </button>
+
             <button className="hidden md:flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white px-4 py-2 rounded-full transition-all duration-300 border border-[#25D366]/20">
               <span className="text-xs uppercase tracking-wider font-medium">WhatsApp</span>
             </button>
+
+            {/* My Vault Access */}
+            <button
+              onClick={onOpenPortfolio}
+              className="text-white hover:text-luxury-gold transition-colors relative flex items-center justify-center"
+              title="My Asset Vault"
+            >
+              <Briefcase size={20} strokeWidth={1.5} />
+              {portfolioCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              )}
+            </button>
+
             <button
               onClick={onOpenCart}
               className="text-white hover:text-luxury-gold transition-colors relative"
@@ -114,18 +142,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onLogoClick, cartCount, onOpenCa
             </button>
             <div className="flex flex-col gap-8 text-center">
               {NAV_ITEMS.map((item) => (
-                <a
+                <button
                   key={item.label}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (item.label === 'Collection') onOpenCatalog();
+                    else window.location.hash = item.href;
+                  }}
                   className="text-2xl font-serif text-white hover:text-luxury-gold transition-colors"
                 >
                   {item.label}
-                </a>
+                </button>
               ))}
               <div className="w-12 h-[1px] bg-white/10 mx-auto my-4" />
-              <button className="text-luxury-gold font-mono text-sm tracking-widest uppercase">
-                Concierge Login
+              <button
+                onClick={() => { setMobileMenuOpen(false); onOpenPortfolio(); }}
+                className="text-luxury-gold font-mono text-sm tracking-widest uppercase flex items-center justify-center gap-2"
+              >
+                <Briefcase size={16} /> My Vault
               </button>
             </div>
           </motion.div>

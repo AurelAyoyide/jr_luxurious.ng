@@ -15,6 +15,11 @@ export const WATCHES: Watch[] = [
     reference: '116500LN',
     price: 32500,
     image: 'https://images.unsplash.com/photo-1639037703873-4556488736eb?auto=format&fit=crop&q=80&w=800',
+    images: [
+      'https://images.unsplash.com/photo-1639037703873-4556488736eb?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&q=80&w=800'
+    ],
     status: 'AVAILABLE',
     condition: 'Like New',
     year: 2023,
@@ -29,6 +34,10 @@ export const WATCHES: Watch[] = [
     reference: '5711/1A',
     price: 115000,
     image: 'https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&q=80&w=800',
+    images: [
+      'https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&q=80&w=800'
+    ],
     status: 'RESERVED',
     condition: 'Excellent',
     year: 2020,

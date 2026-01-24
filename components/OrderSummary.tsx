@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, MessageCircle, ShieldCheck, Clock, CheckCircle2, ChevronRight, Star } from 'lucide-react';
 import { CartItem } from '../types';
@@ -6,11 +6,14 @@ import { CartItem } from '../types';
 interface OrderSummaryProps {
     items: CartItem[];
     onBack: () => void;
-    onFinalize: () => void;
+    onFinalize: (name: string) => void;
 }
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFinalize }) => {
+    const [name, setName] = useState('');
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    // ...
     const date = new Date().toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'long',
@@ -162,6 +165,18 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFin
                             </div>
                         </div>
 
+                        {/* Name Input - Identity */}
+                        <div className="mb-10">
+                            <label className="block text-[9px] uppercase tracking-widest text-luxury-muted mb-2">Reservation Name</label>
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Enter your full name"
+                                className="w-full bg-white/5 border border-white/10 rounded-sm px-4 py-3 text-white font-serif placeholder:font-sans placeholder:text-white/20 focus:outline-none focus:border-luxury-gold transition-colors"
+                            />
+                        </div>
+
                         {/* Trust Indicators */}
                         <div className="grid grid-cols-2 gap-4 mb-10">
                             <div className="flex items-center gap-3 p-3 bg-white/5 rounded-sm">
@@ -183,9 +198,9 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFin
                 </div>
 
                 {/* Sticky Footer */}
-                <div className="p-8 border-t border-white/10 bg-[#050508] mt-auto">
+                <div className="p-8 border-t border-white/10 bg-[#050508] mt-auto relative z-30">
                     <button
-                        onClick={onFinalize}
+                        onClick={() => onFinalize(name)}
                         className="w-full bg-gradient-to-r from-luxury-gold to-[#f0e68c] hover:from-white hover:to-white text-black py-5 rounded-sm font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-3 group shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
                     >
                         <MessageCircle size={18} /> Confirm via WhatsApp <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -195,6 +210,6 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFin
                     </p>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };

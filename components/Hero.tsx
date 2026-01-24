@@ -2,7 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 
-export const Hero: React.FC = () => {
+export interface HeroProps {
+  onExploreCatalog?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
   return (
     <section className="relative min-h-screen pt-32 pb-20 flex items-center overflow-hidden">
 
@@ -53,11 +57,14 @@ export const Hero: React.FC = () => {
             transition={{ delay: 1.4, duration: 0.8 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <a href="#collection" className="group relative px-8 py-4 bg-white/5 border border-white/10 hover:bg-luxury-gold hover:border-luxury-gold transition-all duration-300">
+            <button
+              onClick={onExploreCatalog}
+              className="group relative px-8 py-4 bg-white/5 border border-white/10 hover:bg-luxury-gold hover:border-luxury-gold transition-all duration-300"
+            >
               <span className="relative z-10 flex items-center gap-2 text-white group-hover:text-black uppercase tracking-widest text-xs font-bold">
                 Enter The Vault <ArrowRight size={16} />
               </span>
-            </a>
+            </button>
 
             <a href="#contact" className="px-8 py-4 flex items-center gap-2 text-luxury-muted hover:text-white transition-colors uppercase tracking-widest text-xs font-bold">
               <MessageCircle size={16} /> Concierge
