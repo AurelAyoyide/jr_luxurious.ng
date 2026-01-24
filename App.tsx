@@ -152,19 +152,35 @@ function App() {
 
               <AnimatePresence mode="wait">
                 {view === 'portfolio' ? (
-                  <ClientPortfolio 
-                    items={portfolioItems} 
-                    wishlist={wishlist}
-                    onWatchClick={handleWatchSelect}
-                    clientName={clientName} 
-                  />
+                  <motion.div
+                    key="portfolio"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <ClientPortfolio 
+                      items={portfolioItems} 
+                      wishlist={wishlist}
+                      onWatchClick={handleWatchSelect}
+                      clientName={clientName} 
+                    />
+                  </motion.div>
                 ) : view === 'catalog' ? (
-                  <CatalogPage 
-                    onWatchClick={handleWatchSelect} 
-                    onAddToCart={addToCart} 
-                    onToggleWishlist={toggleWishlist}
-                    wishlist={wishlist}
-                  />
+                  <motion.div
+                    key="catalog"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <CatalogPage 
+                      onWatchClick={handleWatchSelect} 
+                      onAddToCart={addToCart} 
+                      onToggleWishlist={toggleWishlist}
+                      wishlist={wishlist}
+                    />
+                  </motion.div>
                 ) : !selectedWatch ? (
                   <motion.div
                     key="home"
@@ -199,6 +215,11 @@ function App() {
                       isLiked={wishlist.some(w => w.id === selectedWatch.id)}
                       onToggleLike={toggleWishlist}
                       onClose={handleBackToHome}
+                      onBackToCatalog={() => {
+                        setSelectedWatch(null);
+                        setView('catalog');
+                        window.scrollTo(0, 0);
+                      }}
                       onWatchClick={handleWatchSelect}
                       onAddToCart={addToCart}
                     />

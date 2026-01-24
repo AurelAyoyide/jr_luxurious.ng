@@ -19,6 +19,7 @@ interface ProductDetailProps {
     isLiked: boolean;
     onToggleLike: (watch: Watch) => void;
     onClose: () => void;
+    onBackToCatalog?: () => void;
     onWatchClick: (watch: Watch) => void;
     onAddToCart: (watch: Watch) => void;
 }
@@ -28,6 +29,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
     isLiked,
     onToggleLike,
     onClose, 
+    onBackToCatalog,
     onWatchClick, 
     onAddToCart 
 }) => {
@@ -60,7 +62,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
                 <nav className="flex items-center gap-4 mb-12 text-[10px] uppercase tracking-[0.2em] text-luxury-muted">
                     <button onClick={onClose} className="hover:text-luxury-gold transition-colors">Home</button>
                     <ChevronRight size={10} />
-                    <button onClick={onClose} className="hover:text-luxury-gold transition-colors">Collection</button>
+                    <button onClick={onBackToCatalog || onClose} className="hover:text-luxury-gold transition-colors">Collection</button>
                     <ChevronRight size={10} />
                     <span className="text-white">{watch.brand} {watch.model}</span>
                 </nav>

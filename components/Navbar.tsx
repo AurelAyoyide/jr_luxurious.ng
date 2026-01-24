@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ${isScrolled
           ? 'bg-luxury-black/80 backdrop-blur-xl border-b border-white/5 py-4'
           : 'bg-transparent py-6'
           }`}
