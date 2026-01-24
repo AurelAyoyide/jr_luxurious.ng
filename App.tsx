@@ -12,6 +12,7 @@ import { ProductDetail } from './components/ProductDetail';
 import { CartDrawer } from './components/CartDrawer';
 import { SellerDashboard } from './components/SellerDashboard';
 import { LoginModal } from './components/LoginModal';
+import { OrderSummary } from './components/OrderSummary';
 import { Watch, CartItem } from './types';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -20,7 +21,7 @@ function App() {
   const [selectedWatch, setSelectedWatch] = useState<Watch | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [view, setView] = useState<'client' | 'seller'>('client');
+  const [view, setView] = useState<'client' | 'seller' | 'summary'>('client');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -82,6 +83,18 @@ function App() {
     setView('client');
   };
 
+  const handleCheckout = () => {
+    setIsCartOpen(false);
+    setView('summary');
+    window.scrollTo(0, 0);
+  };
+
+  const handleFinalizeOrder = () => {
+    setCartItems([]);
+    setView('client');
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       {!introComplete && (
@@ -105,6 +118,7 @@ function App() {
                 items={cartItems}
                 onUpdateQuantity={updateQuantity}
                 onRemove={removeFromCart}
+                onCheckout={handleCheckout}
               />
 
               <AnimatePresence mode="wait">
@@ -146,10 +160,16 @@ function App() {
 
               <Footer onOpenSeller={handleOpenSeller} />
             </>
-          ) : (
+          ) : view === 'seller' ? (
             <SellerDashboard
               onBackToStore={() => setView('client')}
               onLogout={handleLogout}
+            />
+          ) : (
+            <OrderSummary
+              items={cartItems}
+              onBack={() => setView('client')}
+              onFinalize={handleFinalizeOrder}
             />
           )}
 

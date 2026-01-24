@@ -9,6 +9,7 @@ interface CartDrawerProps {
     items: CartItem[];
     onUpdateQuantity: (id: string, delta: number) => void;
     onRemove: (id: string) => void;
+    onCheckout: () => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -16,7 +17,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     onClose,
     items,
     onUpdateQuantity,
-    onRemove
+    onRemove,
+    onCheckout
 }) => {
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -136,8 +138,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                                     </div>
                                 </div>
 
-                                <button className="w-full py-6 bg-white hover:bg-luxury-gold text-black font-bold uppercase tracking-[0.2em] text-xs transition-all duration-500 flex items-center justify-center gap-3">
-                                    Secure Checkout <ArrowRight size={16} />
+                                <button
+                                    onClick={onCheckout}
+                                    className="w-full py-6 bg-white hover:bg-luxury-gold text-black font-bold uppercase tracking-[0.2em] text-xs transition-all duration-500 flex items-center justify-center gap-3"
+                                >
+                                    Proceed to Summary <ArrowRight size={16} />
                                 </button>
                                 <p className="text-[8px] text-center text-luxury-muted uppercase tracking-widest opacity-50">
                                     Secured by 256-bit SSL Encryption
