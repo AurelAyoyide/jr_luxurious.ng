@@ -5,15 +5,15 @@ import { ArrowRight, MessageCircle } from 'lucide-react';
 export const Hero: React.FC = () => {
   return (
     <section className="relative min-h-screen pt-32 pb-20 flex items-center overflow-hidden">
-      
+
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-luxury-gold/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        
+
         {/* Left Column: Text */}
         <div className="z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -26,7 +26,7 @@ export const Hero: React.FC = () => {
           </motion.div>
 
           <div className="overflow-hidden mb-8">
-            <motion.h1 
+            <motion.h1
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               transition={{ delay: 0.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -37,17 +37,17 @@ export const Hero: React.FC = () => {
             </motion.h1>
           </div>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1 }}
             className="text-luxury-muted text-lg max-w-md mb-10 font-light leading-relaxed"
           >
-            We source, authenticate, and deliver the world's most prestigious watches. 
+            We source, authenticate, and deliver the world's most prestigious watches.
             From Rolex to Patek Philippe, secure your next legacy piece today.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.4, duration: 0.8 }}
@@ -58,7 +58,7 @@ export const Hero: React.FC = () => {
                 Enter The Vault <ArrowRight size={16} />
               </span>
             </a>
-            
+
             <a href="#contact" className="px-8 py-4 flex items-center gap-2 text-luxury-muted hover:text-white transition-colors uppercase tracking-widest text-xs font-bold">
               <MessageCircle size={16} /> Concierge
             </a>
@@ -67,7 +67,7 @@ export const Hero: React.FC = () => {
 
         {/* Right Column: Visual */}
         <div className="relative z-10 hidden lg:block h-[600px]">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1, duration: 1.2 }}
@@ -75,35 +75,35 @@ export const Hero: React.FC = () => {
           >
             {/* Mocking a 3D/High-end visual with an image */}
             <div className="w-full h-full relative">
-                <img 
-                    src="https://images.unsplash.com/photo-1548051834-8c4303d8d697?auto=format&fit=crop&q=80&w=1000" 
-                    alt="Luxury Watch" 
-                    className="w-full h-full object-cover opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-transparent to-transparent" />
-                
-                {/* Floating Card */}
-                <motion.div 
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 p-4 bg-luxury-black/80 backdrop-blur-md border border-white/10"
-                >
-                    <div className="flex justify-between items-start border-b border-white/10 pb-2 mb-2">
-                        <span className="text-luxury-gold font-serif text-lg">Patek Philippe</span>
-                        <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full uppercase">Available</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-luxury-muted text-xs uppercase">Nautilus 5711</span>
-                        <span className="font-mono text-white">$115,000</span>
-                    </div>
-                </motion.div>
+              <img
+                src="https://images.unsplash.com/photo-1548051834-8c4303d8d697?auto=format&fit=crop&q=80&w=1000"
+                alt="Luxury Watch"
+                className="w-full h-full object-cover opacity-80"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-transparent to-transparent" />
+
+              {/* Floating Card */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 p-4 bg-luxury-black/80 backdrop-blur-md border border-white/10"
+              >
+                <div className="flex justify-between items-start border-b border-white/10 pb-2 mb-2">
+                  <span className="text-luxury-gold font-serif text-lg">Patek Philippe</span>
+                  <span className="text-[10px] bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full uppercase">Available</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-luxury-muted text-xs uppercase">Nautilus 5711</span>
+                  <span className="font-mono text-white">₦115,000</span>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
