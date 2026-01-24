@@ -5,10 +5,12 @@ import { PortfolioItem } from '../types';
 
 interface ClientPortfolioProps {
     items: PortfolioItem[];
+    wishlist: Watch[];
+    onWatchClick: (watch: Watch) => void;
     clientName?: string;
 }
 
-export const ClientPortfolio: React.FC<ClientPortfolioProps> = ({ items, clientName }) => {
+export const ClientPortfolio: React.FC<ClientPortfolioProps> = ({ items, wishlist, onWatchClick, clientName }) => {
     const totalValue = items.reduce((sum, item) => sum + item.price, 0);
     const totalAppreciation = totalValue * 0.12; // Simulated 12% gain
     const displayName = clientName ? clientName.split(' ')[0] : 'Collector';
@@ -104,40 +106,81 @@ export const ClientPortfolio: React.FC<ClientPortfolioProps> = ({ items, clientN
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         key={item.id}
-                                        className="flex flex-col md:flex-row gap-4 md:gap-6 p-4 md:p-6 bg-[#0c0c10] border border-white/5 rounded-sm hover:border-luxury-gold/30 transition-all group"
+                                        className="group bg-[#0c0c10] border border-white/5 rounded-sm overflow-hidden hover:border-luxury-gold/30 transition-all"
                                     >
-                                        <div className="w-full md:w-24 h-48 md:h-24 bg-white/5 relative overflow-hidden rounded-sm shrink-0">
-                                            <img src={item.image} alt={item.model} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                                        </div>
-
-                                        <div className="flex-1 flex flex-col md:flex-row justify-between gap-4 md:gap-6">
-                                            <div className="flex-1">
-                                                <p className="text-[9px] uppercase tracking-widest text-luxury-gold mb-1">{item.brand}</p>
-                                                <h4 className="font-serif text-lg text-white leading-tight mb-2">{item.model}</h4>
-                                                <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-white/5 text-[9px] uppercase tracking-wider text-white/60 rounded-sm">
-                                                    <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Acquired' ? 'bg-green-500' : 'bg-luxury-gold animate-pulse'}`} />
-                                                    {item.status}
-                                                </span>
+                                        <div className="flex flex-row p-4 md:p-6 gap-4 md:gap-8">
+                                            {/* Precise Image Thumbnail */}
+                                            <div className="w-20 h-20 md:w-24 md:h-24 bg-white/5 shrink-0 rounded-sm overflow-hidden border border-white/5">
+                                                <img 
+                                                    src={item.image} 
+                                                    alt={item.model} 
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                                                />
                                             </div>
 
-                                            <div className="flex flex-col justify-center">
-                                                <p className="text-[9px] uppercase tracking-widest text-luxury-muted mb-1">Acquisition Price</p>
-                                                <p className="font-mono text-white">₦{item.price.toLocaleString()}</p>
-                                                <p className="text-[9px] text-luxury-muted mt-1">Date: {item.purchaseDate}</p>
-                                            </div>
+                                            {/* Content Grid */}
+                                            <div className="flex-1 min-w-0 flex flex-col justify-between">
+                                                <div className="flex flex-col md:flex-row justify-between items-start gap-2">
+                                                    <div>
+                                                        <p className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-luxury-gold mb-0.5">{item.brand}</p>
+                                                        <h4 className="font-serif text-base md:text-lg text-white leading-tight truncate">{item.model}</h4>
+                                                        <p className="text-[9px] font-mono text-luxury-muted mt-1">{item.reference}</p>
+                                                    </div>
+                                                    <span className="shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 bg-white/5 text-[8px] uppercase tracking-wider text-white/60 rounded-sm border border-white/5">
+                                                        <span className={`w-1 h-1 rounded-full ${item.status === 'Acquired' ? 'bg-green-500' : 'bg-luxury-gold animate-pulse'}`} />
+                                                        {item.status}
+                                                    </span>
+                                                </div>
 
-                                            <div className="flex flex-col justify-center items-start md:items-end">
-                                                <p className="text-[9px] uppercase tracking-widest text-luxury-muted mb-1">Current Est.</p>
-                                                <p className="font-mono text-white">₦{(item.price * 1.12).toLocaleString()}</p>
-                                                <p className="text-[9px] text-green-500 mt-1 flex items-center gap-1">
-                                                    <TrendingUp size={10} /> +12%
-                                                </p>
+                                                {/* Price & Valuation - Row on Desktop, Grid on Mobile */}
+                                                <div className="mt-4 pt-4 border-t border-white/5 grid grid-cols-2 md:flex md:flex-row md:justify-start gap-4 md:gap-12">
+                                                    <div>
+                                                        <p className="text-[8px] uppercase tracking-widest text-luxury-muted mb-1">Cost Basis</p>
+                                                        <p className="font-mono text-xs md:text-sm text-white/80">₦{item.price.toLocaleString()}</p>
+                                                    </div>
+                                                    <div className="md:ml-auto md:text-right">
+                                                        <p className="text-[8px] uppercase tracking-widest text-luxury-muted mb-1">Market Est.</p>
+                                                        <div className="flex items-center gap-2 md:justify-end">
+                                                            <p className="font-mono text-xs md:text-sm text-white">₦{(item.price * 1.12).toLocaleString()}</p>
+                                                            <span className="text-[8px] text-green-500 font-bold bg-green-500/10 px-1 rounded-sm">+12%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </motion.div>
                                 ))}
                             </div>
                         )}
+
+                        {/* Wishlist Section */}
+                        <div className="mt-16 pt-12 border-t border-white/5">
+                            <h3 className="font-serif text-2xl text-white mb-8">Desired Acquisitions</h3>
+                            {wishlist.length === 0 ? (
+                                <div className="p-8 border border-dashed border-white/10 rounded-sm text-center">
+                                    <p className="text-luxury-muted text-sm italic">Your wishlist is currently empty. Explore the vault to curate your desired collection.</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {wishlist.map((watch) => (
+                                        <div 
+                                            key={watch.id} 
+                                            onClick={() => onWatchClick(watch)}
+                                            className="group bg-[#0c0c10] border border-white/5 p-4 rounded-sm flex gap-4 cursor-pointer hover:border-luxury-gold/30 transition-all"
+                                        >
+                                            <div className="w-20 h-20 rounded-sm overflow-hidden flex-shrink-0">
+                                                <img src={watch.image} alt={watch.model} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                                            </div>
+                                            <div className="flex flex-col justify-center">
+                                                <span className="text-[8px] uppercase tracking-widest text-luxury-gold mb-1">{watch.brand}</span>
+                                                <h4 className="text-sm font-serif text-white group-hover:text-luxury-gold transition-colors">{watch.model}</h4>
+                                                <span className="text-[10px] font-mono text-luxury-muted mt-1 underline decoration-luxury-gold/20">₦{watch.price.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                 </div>

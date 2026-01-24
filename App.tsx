@@ -27,6 +27,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [wishlist, setWishlist] = useState<Watch[]>([]);
   const [clientName, setClientName] = useState('');
 
   // Scroll to top when a product is selected
@@ -35,6 +36,16 @@ function App() {
       window.scrollTo(0, 0);
     }
   }, [selectedWatch]);
+
+  const toggleWishlist = (watch: Watch) => {
+    setWishlist(prev => {
+      const exists = prev.find(w => w.id === watch.id);
+      if (exists) {
+        return prev.filter(w => w.id !== watch.id);
+      }
+      return [...prev, watch];
+    });
+  };
 
   const handleWatchSelect = (watch: Watch) => {
     setSelectedWatch(watch);
@@ -141,9 +152,19 @@ function App() {
 
               <AnimatePresence mode="wait">
                 {view === 'portfolio' ? (
-                  <ClientPortfolio items={portfolioItems} clientName={clientName} />
+                  <ClientPortfolio 
+                    items={portfolioItems} 
+                    wishlist={wishlist}
+                    onWatchClick={handleWatchSelect}
+                    clientName={clientName} 
+                  />
                 ) : view === 'catalog' ? (
-                  <CatalogPage onWatchClick={handleWatchSelect} onAddToCart={addToCart} />
+                  <CatalogPage 
+                    onWatchClick={handleWatchSelect} 
+                    onAddToCart={addToCart} 
+                    onToggleWishlist={toggleWishlist}
+                    wishlist={wishlist}
+                  />
                 ) : !selectedWatch ? (
                   <motion.div
                     key="home"
@@ -157,6 +178,8 @@ function App() {
                     <CollectionGrid
                       onWatchClick={handleWatchSelect}
                       onAddToCart={addToCart}
+                      onToggleWishlist={toggleWishlist}
+                      wishlist={wishlist}
                       onViewAll={() => setView('catalog')}
                     />
                     <AuthenticationTimeline />
@@ -173,6 +196,8 @@ function App() {
                   >
                     <ProductDetail
                       watch={selectedWatch}
+                      isLiked={wishlist.some(w => w.id === selectedWatch.id)}
+                      onToggleLike={toggleWishlist}
                       onClose={handleBackToHome}
                       onWatchClick={handleWatchSelect}
                       onAddToCart={addToCart}

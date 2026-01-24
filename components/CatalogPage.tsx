@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, ChevronDown, Search, ArrowUpRight } from 'lucide-react';
+import { Filter, ChevronDown, Search, ArrowUpRight, Heart } from 'lucide-react';
 import { WATCHES } from '../constants';
 import { Watch } from '../types';
 
 interface CatalogPageProps {
     onWatchClick: (watch: Watch) => void;
     onAddToCart: (watch: Watch) => void;
+    onToggleWishlist: (watch: Watch) => void;
+    wishlist: Watch[];
 }
 
 const BRANDS = ['All Brands', ...Array.from(new Set(WATCHES.map(w => w.brand)))];
@@ -18,7 +20,12 @@ const SORT_OPTIONS = [
     { label: 'Recently Released', value: 'newest' },
 ];
 
-export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToCart }) => {
+export const CatalogPage: React.FC<CatalogPageProps> = ({ 
+    onWatchClick, 
+    onAddToCart,
+    onToggleWishlist,
+    wishlist
+}) => {
     const [activeBrand, setActiveBrand] = useState('All Brands');
     const [activeCondition, setActiveCondition] = useState('All Conditions');
     const [searchQuery, setSearchQuery] = useState('');
@@ -87,10 +94,10 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToC
                             />
                         </div>
 
-                        <div className="flex items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                        <div className="grid grid-cols-2 md:flex items-center gap-3 w-full md:w-auto md:overflow-visible pb-2 md:pb-0">
                             <div className="relative group">
-                                <button className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
-                                    <span className="text-luxury-muted">Brand:</span> {activeBrand} <ChevronDown size={12} />
+                                <button className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
+                                    <span className="text-luxury-muted truncate md:overflow-visible">Brand: {activeBrand}</span> <ChevronDown size={12} />
                                 </button>
                                 <div className="absolute top-full left-0 mt-2 w-48 bg-[#1a1a20] border border-white/10 rounded-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-40 max-h-64 overflow-y-auto">
                                     {BRANDS.map(brand => (
@@ -106,10 +113,10 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToC
                             </div>
 
                             <div className="relative group">
-                                <button className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
-                                    <span className="text-luxury-muted">Condition:</span> {activeCondition} <ChevronDown size={12} />
+                                <button className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
+                                    <span className="text-luxury-muted truncate md:overflow-visible">Lvl: {activeCondition}</span> <ChevronDown size={12} />
                                 </button>
-                                <div className="absolute top-full left-0 mt-2 w-48 bg-[#1a1a20] border border-white/10 rounded-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-40">
+                                <div className="absolute top-full right-0 md:left-0 mt-2 w-48 bg-[#1a1a20] border border-white/10 rounded-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-40">
                                     {CONDITIONS.map(cond => (
                                         <button
                                             key={cond}
@@ -122,11 +129,11 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToC
                                 </div>
                             </div>
 
-                            <div className="relative group">
-                                <button className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
-                                    Sort By <ChevronDown size={12} />
+                            <div className="relative group col-span-2 md:col-auto">
+                                <button className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-sm text-[10px] uppercase tracking-wider hover:border-luxury-gold transition-colors whitespace-nowrap">
+                                    <span className="text-luxury-muted">Sort By:</span> <span className="truncate">{SORT_OPTIONS.find(o => o.value === sortBy)?.label}</span> <ChevronDown size={12} />
                                 </button>
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-[#1a1a20] border border-white/10 rounded-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-40">
+                                <div className="absolute top-full right-0 mt-2 w-full md:w-48 bg-[#1a1a20] border border-white/10 rounded-sm shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-40">
                                     {SORT_OPTIONS.map(opt => (
                                         <button
                                             key={opt.value}
@@ -157,7 +164,11 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToC
                                 className="w-full accent-luxury-gold bg-white/10 h-1 rounded-lg appearance-none cursor-pointer"
                             />
                         </div>
-                        {(activeBrand !== 'All Brands' || activeCondition !== 'All Conditions' || searchQuery || maxPrice < 500000) && (
+                        {(activeBrand !== 'All Brands' || 
+                          activeCondition !== 'All Conditions' || 
+                          searchQuery !== '' || 
+                          maxPrice !== 250000 || 
+                          sortBy !== 'featured') && (
                             <button 
                                 onClick={resetFilters}
                                 className="text-[10px] uppercase tracking-widest text-luxury-gold hover:text-white transition-colors underline underline-offset-4"
@@ -184,6 +195,15 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({ onWatchClick, onAddToC
                             >
                                 <div className="aspect-[4/5] relative overflow-hidden bg-[#1a1a20]">
                                     <img src={watch.image} alt={watch.model} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onToggleWishlist(watch);
+                                        }}
+                                        className={`absolute top-4 left-4 transition-colors z-20 ${wishlist.some(w => w.id === watch.id) ? 'text-red-500' : 'text-white/50 hover:text-white'}`}
+                                    >
+                                        <Heart size={18} strokeWidth={1.5} fill={wishlist.some(w => w.id === watch.id) ? "currentColor" : "none"} />
+                                    </button>
                                     {watch.isInvestmentGrade && (
                                         <span className="absolute top-2 right-2 px-2 py-1 bg-luxury-gold text-black text-[8px] font-bold uppercase tracking-widest">Inv. Grade</span>
                                     )}

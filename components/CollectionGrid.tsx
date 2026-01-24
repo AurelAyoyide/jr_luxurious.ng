@@ -9,10 +9,12 @@ const FILTERS = ['All', 'Rolex', 'Patek Philippe', 'Audemars Piguet', 'Omega', '
 interface CollectionGridProps {
     onWatchClick?: (watch: Watch) => void;
     onAddToCart?: (watch: Watch) => void;
+    onToggleWishlist?: (watch: Watch) => void;
+    wishlist?: Watch[];
     onViewAll?: () => void;
 }
 
-export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, onAddToCart, onViewAll }) => {
+export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, onAddToCart, onToggleWishlist, wishlist, onViewAll }) => {
     const [activeFilter, setActiveFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 3;
@@ -71,6 +73,8 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, on
                             <WatchCard
                                 watch={watch}
                                 index={index % ITEMS_PER_PAGE}
+                                isWishlisted={wishlist?.some(w => w.id === watch.id) || false}
+                                onToggleWishlist={() => onToggleWishlist?.(watch)}
                                 onClick={() => onWatchClick?.(watch)}
                                 onAddToCart={() => onAddToCart?.(watch)}
                             />
@@ -155,9 +159,11 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, on
 const WatchCard: React.FC<{
     watch: Watch;
     index: number;
+    isWishlisted: boolean;
+    onToggleWishlist: () => void;
     onClick: () => void;
     onAddToCart: () => void;
-}> = ({ watch, index, onClick, onAddToCart }) => {
+}> = ({ watch, index, isWishlisted, onToggleWishlist, onClick, onAddToCart }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -195,10 +201,13 @@ const WatchCard: React.FC<{
 
                 {/* Like Button */}
                 <button
-                    className="absolute top-4 left-4 text-white/50 hover:text-white transition-colors z-20"
-                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute top-4 left-4 transition-colors z-20 ${isWishlisted ? 'text-red-500' : 'text-white/50 hover:text-white'}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleWishlist();
+                    }}
                 >
-                    <Heart size={20} strokeWidth={1.5} />
+                    <Heart size={20} strokeWidth={1.5} fill={isWishlisted ? "currentColor" : "none"} />
                 </button>
             </div>
 

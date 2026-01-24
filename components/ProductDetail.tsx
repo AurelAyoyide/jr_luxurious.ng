@@ -16,13 +16,21 @@ import { WATCHES } from '../constants';
 
 interface ProductDetailProps {
     watch: Watch;
+    isLiked: boolean;
+    onToggleLike: (watch: Watch) => void;
     onClose: () => void;
     onWatchClick: (watch: Watch) => void;
     onAddToCart: (watch: Watch) => void;
 }
 
-export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, onWatchClick, onAddToCart }) => {
-    const [isLiked, setIsLiked] = React.useState(false);
+export const ProductDetail: React.FC<ProductDetailProps> = ({ 
+    watch, 
+    isLiked,
+    onToggleLike,
+    onClose, 
+    onWatchClick, 
+    onAddToCart 
+}) => {
     const [isReserving, setIsReserving] = React.useState(false);
     const [selectedImage, setSelectedImage] = React.useState(0);
     // Ensure we start at top
@@ -82,7 +90,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ watch, onClose, on
                                     )}
                                 </div>
                                 <button
-                                    onClick={() => setIsLiked(!isLiked)}
+                                    onClick={() => onToggleLike(watch)}
                                     className={`absolute top-6 right-6 p-3 backdrop-blur-md rounded-full border transition-all duration-300 ${isLiked ? 'bg-red-500 border-red-500 text-white' : 'bg-luxury-black/40 border-white/10 text-white hover:text-red-500'}`}
                                 >
                                     <Heart size={18} strokeWidth={1.5} fill={isLiked ? "currentColor" : "none"} />
