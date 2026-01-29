@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, ShoppingBag, X, Briefcase } from 'lucide-react';
+import { Menu, ShoppingBag, X, Briefcase, Watch, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { NAV_ITEMS } from '../constants';
+import { LanguageToggle } from './LanguageToggle';
+
+const WHATSAPP_NUMBER = '2349072900500';
 
 interface NavbarProps {
   onLogoClick?: () => void;
@@ -22,6 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenCatalog,
   portfolioCount
 }) => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -51,13 +56,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onLogoClick}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity text-left"
           >
-            <div className="w-8 h-8 border border-luxury-gold flex items-center justify-center rounded-sm">
-              <span className="font-serif text-luxury-gold text-lg">V</span>
-            </div>
+            <Watch className="text-luxury-gold" size={28} />
             <div>
-              <span className="font-serif text-2xl text-white tracking-wide block leading-none">THE VAULT</span>
+              <span className="font-serif text-xl text-white tracking-wide block leading-none">Luxurious.ng</span>
               <span className="block text-[8px] font-sans font-medium tracking-[0.3em] text-luxury-muted uppercase">
-                Luxury Timepieces
+                {t('brand.tagline')}
               </span>
             </div>
           </button>
@@ -80,17 +83,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={onOpenSeller}
-              className="hidden md:flex items-center gap-2 border border-luxury-gold/30 hover:bg-luxury-gold text-luxury-gold hover:text-black px-4 py-2 rounded-sm transition-all duration-300 group"
-            >
-              <span className="text-[10px] uppercase tracking-widest font-bold">Concierge</span>
-            </button>
+          <div className="flex items-center gap-4">
+            {/* Language Toggle */}
+            <div className="hidden md:block">
+              <LanguageToggle />
+            </div>
 
-            <button className="hidden md:flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white px-4 py-2 rounded-full transition-all duration-300 border border-[#25D366]/20">
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-2 bg-[#25D366]/10 hover:bg-[#25D366] text-[#25D366] hover:text-white px-4 py-2 rounded-full transition-all duration-300 border border-[#25D366]/20"
+            >
+              <MessageCircle size={16} />
               <span className="text-xs uppercase tracking-wider font-medium">WhatsApp</span>
-            </button>
+            </a>
 
             {/* My Vault Access */}
             <button
@@ -159,8 +166,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => { setMobileMenuOpen(false); onOpenPortfolio(); }}
                 className="text-luxury-gold font-mono text-sm tracking-widest uppercase flex items-center justify-center gap-2"
               >
-                <Briefcase size={16} /> My Vault
+                <Briefcase size={16} /> {t('nav.myVault')}
               </button>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center justify-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full"
+              >
+                <MessageCircle size={18} /> WhatsApp
+              </a>
+              <div className="mt-4">
+                <LanguageToggle />
+              </div>
             </div>
           </motion.div>
         )}

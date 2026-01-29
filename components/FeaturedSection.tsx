@@ -5,24 +5,24 @@ import { ArrowUpRight } from 'lucide-react';
 const FEATURED_PIECES = [
   {
     img: "https://images.unsplash.com/photo-1632057396657-695cc7241284?auto=format&fit=crop&q=80&w=1200",
-    name: "Rolex Daytona 'Paul Newman'",
-    desc: "The holy grail of vintage chronographs. Ref 6239 with exotic dial.",
-    price: "₦225,000,000",
-    year: "1969"
+    name: "Rolex Daytona 'Panda'",
+    desc: "Le chronographe de course par excellence. Cadran blanc iconique, finitions impeccables.",
+    price: "₦185,000",
+    year: "2024"
   },
   {
     img: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=1200",
-    name: "Patek Philippe 5740G",
-    desc: "The first Grand Complication in the Nautilus collection.",
-    price: "₦280,000,000",
+    name: "Patek Philippe Nautilus",
+    desc: "L'icône du sport chic. Mouvement automatique, cadran bleu profond.",
+    price: "₦245,000",
     year: "2024"
   },
   {
     img: "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?auto=format&fit=crop&q=80&w=1200",
-    name: "AP Royal Oak QP",
-    desc: "Openworked ceramic perpetual calendar. A masterpiece of engineering.",
-    price: "₦195,000,000",
-    year: "2023"
+    name: "AP Royal Oak",
+    desc: "Design Gérald Genta. Boîtier octogonal, bracelet intégré en acier.",
+    price: "₦195,000",
+    year: "2024"
   }
 ];
 
@@ -50,7 +50,7 @@ export const FeaturedSection: React.FC = () => {
             className="flex items-center gap-3 mb-6"
           >
             <div className="h-[1px] w-12 bg-luxury-gold"></div>
-            <span className="text-luxury-gold text-xs font-mono tracking-[0.5em] uppercase">Private Reserve</span>
+            <span className="text-luxury-gold text-xs font-mono tracking-[0.5em] uppercase">Sélection Premium</span>
           </motion.div>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -60,7 +60,7 @@ export const FeaturedSection: React.FC = () => {
               transition={{ duration: 1, delay: 0.2 }}
               className="text-6xl md:text-8xl font-serif text-white tracking-tight"
             >
-              Crown Jewels
+              Best-Sellers
             </motion.h2>
           </div>
         </div>

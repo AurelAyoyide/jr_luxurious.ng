@@ -1,12 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowRight, MessageCircle } from 'lucide-react';
+
+const WHATSAPP_NUMBER = '2349072900500';
 
 export interface HeroProps {
   onExploreCatalog?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative min-h-screen pt-32 pb-20 flex items-center overflow-hidden">
 
@@ -25,7 +30,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
           >
             <span className="w-12 h-[1px] bg-luxury-gold/50" />
             <span className="text-luxury-gold font-mono text-xs tracking-[0.25em] uppercase">
-              Global Delivery • Authenticated
+              {t('hero.tagline')}
             </span>
           </motion.div>
 
@@ -36,8 +41,8 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
               transition={{ delay: 0.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="text-5xl md:text-7xl lg:text-8xl font-serif text-luxury-text leading-[0.9]"
             >
-              Timepieces <br />
-              <span className="italic text-luxury-gold/90">Beyond</span> Value.
+              {t('hero.title')} <br />
+              <span className="italic text-luxury-gold/90">{t('hero.titleAccent')}</span>
             </motion.h1>
           </div>
 
@@ -47,8 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
             transition={{ delay: 1.2, duration: 1 }}
             className="text-luxury-muted text-lg max-w-md mb-10 font-light leading-relaxed"
           >
-            We source, authenticate, and deliver the world's most prestigious watches.
-            From Rolex to Patek Philippe, secure your next legacy piece today.
+            {t('hero.subtitle')}
           </motion.p>
 
           <motion.div
@@ -62,12 +66,17 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
               className="group relative px-8 py-4 bg-white/5 border border-white/10 hover:bg-luxury-gold hover:border-luxury-gold transition-all duration-300"
             >
               <span className="relative z-10 flex items-center gap-2 text-white group-hover:text-black uppercase tracking-widest text-xs font-bold">
-                Enter The Vault <ArrowRight size={16} />
+                {t('hero.cta')} <ArrowRight size={16} />
               </span>
             </button>
 
-            <a href="#contact" className="px-8 py-4 flex items-center gap-2 text-luxury-muted hover:text-white transition-colors uppercase tracking-widest text-xs font-bold">
-              <MessageCircle size={16} /> Concierge
+            <a 
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 flex items-center gap-2 text-[#25D366] hover:text-white transition-colors uppercase tracking-widest text-xs font-bold"
+            >
+              <MessageCircle size={16} /> WhatsApp
             </a>
           </motion.div>
         </div>
@@ -116,7 +125,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
         transition={{ delay: 2, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] uppercase tracking-widest text-luxury-muted">Scroll</span>
+        <span className="text-[10px] uppercase tracking-widest text-luxury-muted">{t('hero.scroll')}</span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-luxury-gold to-transparent" />
       </motion.div>
     </section>

@@ -5,7 +5,7 @@ import { Hero } from './components/Hero';
 import { CollectionGrid } from './components/CollectionGrid';
 import { FeaturedSection } from './components/FeaturedSection';
 import { AuthenticationTimeline } from './components/AuthenticationTimeline';
-import { InvestmentChart } from './components/InvestmentChart';
+import { WhyChooseUs } from './components/WhyChooseUs';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { ProductDetail } from './components/ProductDetail';
@@ -17,6 +17,7 @@ import { ClientPortfolio } from './components/ClientPortfolio';
 import { CatalogPage } from './components/CatalogPage';
 import { Watch, CartItem, PortfolioItem } from './types';
 import { AnimatePresence, motion } from 'framer-motion';
+import './i18n/config';
 
 function App() {
   const [introComplete, setIntroComplete] = useState(false);
@@ -199,7 +200,7 @@ function App() {
                       onViewAll={() => setView('catalog')}
                     />
                     <AuthenticationTimeline />
-                    <InvestmentChart />
+                    <WhyChooseUs />
                     <ContactSection />
                   </motion.div>
                 ) : (

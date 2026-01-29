@@ -4,7 +4,7 @@ import { Heart, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { WATCHES } from '../constants';
 import { Watch } from '../types';
 
-const FILTERS = ['All', 'Rolex', 'Patek Philippe', 'Audemars Piguet', 'Omega', 'Investment'];
+const FILTERS = ['Tout', 'Rolex', 'Patek Philippe', 'Audemars Piguet', 'Omega', 'Nouveautés'];
 
 interface CollectionGridProps {
     onWatchClick?: (watch: Watch) => void;
@@ -15,14 +15,14 @@ interface CollectionGridProps {
 }
 
 export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, onAddToCart, onToggleWishlist, wishlist, onViewAll }) => {
-    const [activeFilter, setActiveFilter] = useState('All');
+    const [activeFilter, setActiveFilter] = useState('Tout');
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 3;
 
-    const filteredWatches = activeFilter === 'All'
+    const filteredWatches = activeFilter === 'Tout'
         ? WATCHES
-        : activeFilter === 'Investment'
-            ? WATCHES.filter(w => w.isInvestmentGrade)
+        : activeFilter === 'Nouveautés'
+            ? WATCHES.filter(w => w.isNewArrival)
             : WATCHES.filter(w => w.brand === activeFilter);
 
     const totalPages = Math.ceil(filteredWatches.length / ITEMS_PER_PAGE);
@@ -45,8 +45,8 @@ export const CollectionGrid: React.FC<CollectionGridProps> = ({ onWatchClick, on
 
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
                     <div>
-                        <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">The Collection</h2>
-                        <p className="text-luxury-muted max-w-lg">Curated timepieces from the world's finest watchmakers. Authenticated, serviced, and ready for immediate global delivery.</p>
+                        <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">La Collection</h2>
+                        <p className="text-luxury-muted max-w-lg">Montres de prestige aux finitions impeccables. Qualité contrôlée, livraison rapide et discrète partout dans le monde.</p>
                     </div>
 
                     {/* Filter Bar */}

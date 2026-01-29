@@ -73,8 +73,8 @@ export const VaultIntro: React.FC<VaultIntroProps> = ({ onComplete }) => {
              exit={{ opacity: 0 }}
              className="text-center"
            >
-             <h1 className="text-4xl md:text-6xl font-serif text-white mb-2">THE VAULT</h1>
-             <p className="font-mono text-green-500 text-xs tracking-[0.3em] uppercase">ACCESS GRANTED</p>
+             <h1 className="text-4xl md:text-6xl font-serif text-white mb-2">Luxurious.ng</h1>
+             <p className="font-mono text-green-500 text-xs tracking-[0.3em] uppercase">WELCOME</p>
            </motion.div>
           )}
         </AnimatePresence>

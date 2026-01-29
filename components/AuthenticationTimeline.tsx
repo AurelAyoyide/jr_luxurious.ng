@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Eye, Activity, Database, FileCheck, Search, Award } from 'lucide-react';
+import { ShieldCheck, Eye, Activity, Gem, FileCheck, Sparkles, Award } from 'lucide-react';
 
 const STEPS = [
-    { icon: Search, title: 'Sourcing', desc: 'Vetted dealer network' },
-    { icon: Eye, title: 'Visual Inspection', desc: 'Case, dial, hands check' },
-    { icon: Activity, title: 'Movement', desc: 'Timegrapher analysis' },
-    { icon: Database, title: 'Serial Check', desc: 'Stolen registry verify' },
-    { icon: ShieldCheck, title: 'Water Resistance', desc: 'Pressure testing' },
-    { icon: FileCheck, title: 'Documentation', desc: 'Paperwork verification' },
-    { icon: Award, title: 'Certification', desc: 'Vault Guarantee issued' },
+    { icon: Gem, title: 'Matériaux', desc: 'Acier 904L & Saphir' },
+    { icon: Eye, title: 'Inspection Visuelle', desc: 'Cadran, boîtier, aiguilles' },
+    { icon: Activity, title: 'Mouvement', desc: 'Calibrage précis' },
+    { icon: Sparkles, title: 'Finitions', desc: 'Polissage premium' },
+    { icon: ShieldCheck, title: 'Étanchéité', desc: 'Test de pression' },
+    { icon: FileCheck, title: 'Emballage', desc: 'Écrin luxe inclus' },
+    { icon: Award, title: 'Validation', desc: 'Garantie 2 ans' },
 ];
 
 export const AuthenticationTimeline: React.FC = () => {
@@ -20,10 +20,10 @@ export const AuthenticationTimeline: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="text-center mb-20">
-                <span className="text-luxury-gold font-mono text-xs tracking-[0.3em] uppercase">Trust Protocol</span>
-                <h2 className="text-4xl md:text-5xl font-serif text-white mt-4 mb-6">Certified Authenticity</h2>
+                <span className="text-luxury-gold font-mono text-xs tracking-[0.3em] uppercase">Contrôle Qualité</span>
+                <h2 className="text-4xl md:text-5xl font-serif text-white mt-4 mb-6">Excellence Garantie</h2>
                 <p className="text-luxury-muted max-w-2xl mx-auto">
-                    Every timepiece in The Vault passes our rigorous 7-point authentication protocol before reaching your wrist.
+                    Chaque garde-temps passe par notre protocole de contrôle qualité en 7 étapes avant de vous être livré.
                 </p>
             </div>
 
@@ -54,10 +54,10 @@ export const AuthenticationTimeline: React.FC = () => {
                         transition={{ delay: 0.8, duration: 0.5 }}
                         className="p-6 border border-luxury-gold/30 bg-luxury-gold/5 flex flex-col justify-center items-center text-center"
                     >
-                       <h3 className="text-luxury-gold font-serif text-lg mb-2">100% Guaranteed</h3>
-                       <p className="text-xs text-luxury-muted mb-4">Lifetime authenticity warranty.</p>
+                       <h3 className="text-luxury-gold font-serif text-lg mb-2">Garantie 2 Ans</h3>
+                       <p className="text-xs text-luxury-muted mb-4">Qualité certifiée, satisfaction assurée.</p>
                        <button className="text-[10px] uppercase font-bold text-white border-b border-white pb-1 hover:text-luxury-gold hover:border-luxury-gold transition-colors">
-                           Download Sample Report
+                           Voir les Conditions
                        </button>
                     </motion.div>
             </div>

@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
-import { MessageCircle, Send, ShieldCheck, Globe, Clock9 } from 'lucide-react';
+import { MessageCircle, Send, ShieldCheck, Globe, Clock9, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+
+const WHATSAPP_NUMBER = '2349072900500';
+const EMAIL = 'hmmininyawa7@gmail.com';
 
 export const ContactSection: React.FC = () => {
+    const { t } = useTranslation();
     const [formState, setFormState] = useState({ name: '', phone: '', watch: '' });
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        // Create WhatsApp message with form data
+        const message = encodeURIComponent(
+            `👋 Hello Luxurious.ng!\n\n` +
+            `📝 *Contact Request*\n` +
+            `━━━━━━━━━━━━━\n` +
+            `👤 Name: ${formState.name}\n` +
+            `📞 Phone: ${formState.phone}\n` +
+            `⌚ Interested in: ${formState.watch}\n\n` +
+            `Looking forward to hearing from you!`
+        );
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
         setIsSubmitted(true);
         setTimeout(() => setIsSubmitted(false), 5000);
         setFormState({ name: '', phone: '', watch: '' });
@@ -29,30 +45,30 @@ export const ContactSection: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                         >
-                            <span className="text-luxury-gold font-mono text-[10px] tracking-[0.4em] uppercase mb-6 block">Concierge Division</span>
+                            <span className="text-luxury-gold font-mono text-[10px] tracking-[0.4em] uppercase mb-6 block">Service Client</span>
                             <h2 className="text-5xl md:text-7xl font-serif text-white mb-8 leading-[1.1]">
-                                Secure Your <br />
-                                <span className="italic">Legacy.</span>
+                                Votre Montre <br />
+                                <span className="italic">Vous Attend.</span>
                             </h2>
                             <p className="text-luxury-muted text-lg mb-12 leading-relaxed max-w-lg">
-                                Access our global network of prestige timepieces. Our specialists provide
-                                discreet, white-glove service for the world's most demanding collectors.
+                                Une question sur un modèle ? Besoin de conseils ? Notre équipe 
+                                est à votre disposition pour un service personnalisé et discret.
                             </p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3 text-luxury-gold">
                                         <Globe size={18} />
-                                        <span className="text-[10px] uppercase tracking-widest font-bold">Global Sourcing</span>
+                                        <span className="text-[10px] uppercase tracking-widest font-bold">Livraison Mondiale</span>
                                     </div>
-                                    <p className="text-xs text-luxury-muted">Finding rare pieces across 47 countries.</p>
+                                    <p className="text-xs text-luxury-muted">Expédition sécurisée dans plus de 47 pays.</p>
                                 </div>
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3 text-luxury-gold">
                                         <ShieldCheck size={18} />
-                                        <span className="text-[10px] uppercase tracking-widest font-bold">Guaranteed Origin</span>
+                                        <span className="text-[10px] uppercase tracking-widest font-bold">Qualité Garantie</span>
                                     </div>
-                                    <p className="text-xs text-luxury-muted">Every piece fully authenticated by our masters.</p>
+                                    <p className="text-xs text-luxury-muted">Chaque pièce contrôlée par nos experts.</p>
                                 </div>
                             </div>
 
@@ -126,11 +142,24 @@ export const ContactSection: React.FC = () => {
                                 </button>
                             </form>
 
-                            <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
-                                <p className="text-[10px] text-luxury-muted uppercase tracking-widest">Prefer Direct Messaging?</p>
-                                <a href="#" className="flex items-center gap-2 text-[#25D366] hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">
-                                    <MessageCircle size={18} /> WhatsApp Direct
-                                </a>
+                            <div className="mt-12 pt-8 border-t border-white/5 space-y-4">
+                                <p className="text-[10px] text-luxury-muted uppercase tracking-widest text-center">{t('contact.form.whatsapp')}</p>
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    <a 
+                                        href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#128C7E] transition-colors"
+                                    >
+                                        <MessageCircle size={18} /> WhatsApp
+                                    </a>
+                                    <a 
+                                        href={`mailto:${EMAIL}`}
+                                        className="flex items-center gap-2 text-luxury-gold hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+                                    >
+                                        <Mail size={18} /> {EMAIL}
+                                    </a>
+                                </div>
                             </div>
                         </motion.div>
 

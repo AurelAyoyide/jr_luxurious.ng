@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, MessageCircle, ShieldCheck, Clock, CheckCircle2, ChevronRight, Star } from 'lucide-react';
 import { CartItem } from '../types';
 
@@ -9,7 +10,36 @@ interface OrderSummaryProps {
     onFinalize: (name: string) => void;
 }
 
+const WHATSAPP_NUMBER = '2349072900500';
+
+const formatCartForWhatsApp = (items: CartItem[], name: string, total: number, t: any): string => {
+    let message = `🛍️ *NEW ORDER - Luxurious.ng* 🛍️\n\n`;
+    message += `👤 *${t('order.name')}:* ${name || 'Guest'}\n`;
+    message += `📅 *Date:* ${new Date().toLocaleDateString()}\n\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `📦 *ORDER DETAILS*\n`;
+    message += `━━━━━━━━━━━━━━━━\n\n`;
+    
+    items.forEach((item, index) => {
+        message += `${index + 1}. ⌚ *${item.brand} ${item.model}*\n`;
+        message += `   📋 Ref: ${item.reference}\n`;
+        message += `   💰 Price: ₦${item.price.toLocaleString()}\n`;
+        message += `   🔢 Qty: ${item.quantity}\n`;
+        message += `   💵 Subtotal: ₦${(item.price * item.quantity).toLocaleString()}\n\n`;
+    });
+    
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `🚚 *Shipping:* FREE ✅\n`;
+    message += `💎 *TOTAL:* ₦${total.toLocaleString()}\n`;
+    message += `━━━━━━━━━━━━━━━━\n\n`;
+    message += `✨ Thank you for choosing Luxurious.ng!\n`;
+    message += `📞 We will contact you shortly to confirm your order.`;
+    
+    return encodeURIComponent(message);
+};
+
 export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFinalize }) => {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -48,7 +78,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFin
                 {/* Decorative Elements */}
                 <div className="absolute top-12 left-12 z-20">
                     <div className="w-16 h-[1px] bg-white/30 mb-2" />
-                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/80 font-light">The Vault Reserve</span>
+                    <span className="text-[10px] uppercase tracking-[0.4em] text-white/80 font-light">Luxurious.ng</span>
                 </div>
 
                 {/* Central Focus Quote */}
@@ -199,14 +229,17 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFin
 
                 {/* Sticky Footer */}
                 <div className="p-8 border-t border-white/10 bg-[#050508] mt-auto relative z-30">
-                    <button
+                    <a
+                        href={`https://wa.me/${WHATSAPP_NUMBER}?text=${formatCartForWhatsApp(items, name, total, t)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => onFinalize(name)}
-                        className="w-full bg-gradient-to-r from-luxury-gold to-[#f0e68c] hover:from-white hover:to-white text-black py-5 rounded-sm font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-3 group shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                        className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white py-5 rounded-sm font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-3 group shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)]"
                     >
-                        <MessageCircle size={18} /> Confirm via WhatsApp <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
+                        <MessageCircle size={18} /> {t('order.confirm')} <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
                     <p className="text-[8px] text-center text-luxury-muted mt-4 opacity-70">
-                        Topissime Concierge Service • By confirming, you agree to our Terms of Sourcing.
+                        Luxurious.ng • {t('order.terms')}
                     </p>
                 </div>
             </div>
