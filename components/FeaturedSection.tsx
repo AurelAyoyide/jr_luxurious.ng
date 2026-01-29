@@ -1,27 +1,35 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { ArrowUpRight } from 'lucide-react';
 
+// Images de montres de luxe fiables
 const FEATURED_PIECES = [
   {
-    img: "https://images.unsplash.com/photo-1632057396657-695cc7241284?auto=format&fit=crop&q=80&w=1200",
-    name: "Rolex Daytona 'Panda'",
-    desc: "Le chronographe de course par excellence. Cadran blanc iconique, finitions impeccables.",
-    price: "₦185,000",
+    img: "https://images.pexels.com/photos/3766111/pexels-photo-3766111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750",
+    nameEn: "Rolex Daytona 'Panda'",
+    nameFr: "Rolex Daytona 'Panda'",
+    descEn: "The ultimate racing chronograph. Iconic white dial with black subdials, ceramic bezel. 40mm case with premium automatic movement.",
+    descFr: "Le chronographe de course par excellence. Cadran blanc iconique avec sous-cadrans noirs, lunette céramique. Boîtier 40mm avec mouvement automatique premium.",
+    price: "₦85,000",
     year: "2024"
   },
   {
-    img: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=1200",
-    name: "Patek Philippe Nautilus",
-    desc: "L'icône du sport chic. Mouvement automatique, cadran bleu profond.",
-    price: "₦245,000",
+    img: "https://images.pexels.com/photos/1034063/pexels-photo-1034063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750",
+    nameEn: "Patek Philippe Nautilus",
+    nameFr: "Patek Philippe Nautilus",
+    descEn: "The icon of luxury sports watches. Automatic movement with stunning deep blue dial and integrated steel bracelet.",
+    descFr: "L'icône du sport chic. Mouvement automatique avec magnifique cadran bleu profond et bracelet acier intégré.",
+    price: "₦125,000",
     year: "2024"
   },
   {
-    img: "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?auto=format&fit=crop&q=80&w=1200",
-    name: "AP Royal Oak",
-    desc: "Design Gérald Genta. Boîtier octogonal, bracelet intégré en acier.",
-    price: "₦195,000",
+    img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750",
+    nameEn: "AP Royal Oak",
+    nameFr: "AP Royal Oak",
+    descEn: "Gérald Genta design masterpiece. Octagonal bezel with visible screws, tapisserie dial, integrated steel bracelet.",
+    descFr: "Chef-d'œuvre signé Gérald Genta. Lunette octogonale avec vis apparentes, cadran tapisserie, bracelet acier intégré.",
+    price: "₦95,000",
     year: "2024"
   }
 ];
@@ -104,6 +112,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ piece, index, total, progress }) => {
+  const { i18n } = useTranslation();
   const start = index / total;
   const end = (index + 1) / total;
   
@@ -162,7 +171,7 @@ const Card: React.FC<CardProps> = ({ piece, index, total, progress }) => {
             <div className="md:col-span-6 aspect-[16/10] md:aspect-[4/3] overflow-hidden bg-black relative">
                <img 
                 src={piece.img} 
-                alt={piece.name} 
+                alt={i18n.language === 'fr' ? piece.nameFr : piece.nameEn} 
                 className="w-full h-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
               />
               <div className="absolute top-4 left-4 bg-luxury-gold text-black px-3 py-1 text-[9px] font-bold uppercase tracking-widest">
@@ -174,9 +183,11 @@ const Card: React.FC<CardProps> = ({ piece, index, total, progress }) => {
             <div className="md:col-span-6 space-y-6">
               <div>
                 <span className="text-luxury-gold/50 font-mono text-[10px] tracking-widest uppercase mb-2 block">{piece.year} Archive</span>
-                <h3 className="text-2xl md:text-3xl font-serif text-white mb-3 leading-tight">{piece.name}</h3>
+                <h3 className="text-2xl md:text-3xl font-serif text-white mb-3 leading-tight">
+                  {i18n.language === 'fr' ? piece.nameFr : piece.nameEn}
+                </h3>
                 <p className="text-luxury-muted text-[13px] font-light leading-relaxed">
-                  {piece.desc}
+                  {i18n.language === 'fr' ? piece.descFr : piece.descEn}
                 </p>
               </div>
 

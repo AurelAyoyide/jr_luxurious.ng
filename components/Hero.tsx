@@ -92,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog }) => {
             {/* Mocking a 3D/High-end visual with an image */}
             <div className="w-full h-full relative">
               <img
-                src="https://images.unsplash.com/photo-1548051834-8c4303d8d697?auto=format&fit=crop&q=80&w=1000"
+                src="https://images.pexels.com/photos/1034063/pexels-photo-1034063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750"
                 alt="Luxury Watch"
                 className="w-full h-full object-cover opacity-80"
               />

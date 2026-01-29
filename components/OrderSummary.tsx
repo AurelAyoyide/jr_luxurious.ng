@@ -13,29 +13,35 @@ interface OrderSummaryProps {
 const WHATSAPP_NUMBER = '2349072900500';
 
 const formatCartForWhatsApp = (items: CartItem[], name: string, total: number, t: any): string => {
-    let message = `🛍️ *NEW ORDER - Luxurious.ng* 🛍️\n\n`;
-    message += `👤 *${t('order.name')}:* ${name || 'Guest'}\n`;
-    message += `📅 *Date:* ${new Date().toLocaleDateString()}\n\n`;
-    message += `━━━━━━━━━━━━━━━━\n`;
-    message += `📦 *ORDER DETAILS*\n`;
-    message += `━━━━━━━━━━━━━━━━\n\n`;
+    const lines: string[] = [];
+    
+    lines.push(`🛍️ *NEW ORDER - Luxurious.ng* 🛍️`);
+    lines.push(``);
+    lines.push(`👤 *${t('order.name')}:* ${name || 'Guest'}`);
+    lines.push(`📅 *Date:* ${new Date().toLocaleDateString()}`);
+    lines.push(``);
+    lines.push(`📦 *ORDER DETAILS*`);
+    lines.push(`-------------------`);
     
     items.forEach((item, index) => {
-        message += `${index + 1}. ⌚ *${item.brand} ${item.model}*\n`;
-        message += `   📋 Ref: ${item.reference}\n`;
-        message += `   💰 Price: ₦${item.price.toLocaleString()}\n`;
-        message += `   🔢 Qty: ${item.quantity}\n`;
-        message += `   💵 Subtotal: ₦${(item.price * item.quantity).toLocaleString()}\n\n`;
+        lines.push(``);
+        lines.push(`${index + 1}. ⌚ *${item.brand} ${item.model}*`);
+        lines.push(`   📋 Ref: ${item.reference}`);
+        lines.push(`   💰 Price: ₦${item.price.toLocaleString()}`);
+        lines.push(`   🔢 Qty: ${item.quantity}`);
+        lines.push(`   💵 Subtotal: ₦${(item.price * item.quantity).toLocaleString()}`);
     });
     
-    message += `━━━━━━━━━━━━━━━━\n`;
-    message += `🚚 *Shipping:* FREE ✅\n`;
-    message += `💎 *TOTAL:* ₦${total.toLocaleString()}\n`;
-    message += `━━━━━━━━━━━━━━━━\n\n`;
-    message += `✨ Thank you for choosing Luxurious.ng!\n`;
-    message += `📞 We will contact you shortly to confirm your order.`;
+    lines.push(``);
+    lines.push(`-------------------`);
+    lines.push(`🚚 *Shipping:* FREE ✅`);
+    lines.push(`💎 *TOTAL:* ₦${total.toLocaleString()}`);
+    lines.push(`-------------------`);
+    lines.push(``);
+    lines.push(`✨ Thank you for choosing Luxurious.ng!`);
+    lines.push(`📞 We will contact you shortly.`);
     
-    return encodeURIComponent(message);
+    return encodeURIComponent(lines.join('\n'));
 };
 
 export const OrderSummary: React.FC<OrderSummaryProps> = ({ items, onBack, onFinalize }) => {
